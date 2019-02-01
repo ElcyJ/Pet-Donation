@@ -69,7 +69,6 @@ public class PetMainActivity extends AppCompatActivity {
             }
 
         });
-        
 
         flingContainer.setOnItemClickListener(new SwipeFlingAdapterView.OnItemClickListener() {
             @Override
