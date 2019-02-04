@@ -9,7 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Auth.LoginActivity"></activity>
+        <activity android:name=".Setup.AdoptActivity"></activity>
+        <activity android:name=".Setup.DonateActivity" />
+        <activity android:name=".Setup.ChooseDonateAdoptActivity" />
+        <activity android:name=".Auth.LoginActivity" />
         <activity android:name=".Auth.RegistrationActivity" />
         <activity android:name=".Auth.ChooseLoginRegistrationActivity">
             <intent-filter>

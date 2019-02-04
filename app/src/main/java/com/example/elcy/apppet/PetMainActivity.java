@@ -1,20 +1,31 @@
 package com.example.elcy.apppet;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.elcy.apppet.Auth.ChooseLoginRegistrationActivity;
+import com.google.firebase.auth.FirebaseAuth;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PetMainActivity extends AppCompatActivity {
 
-    private ArrayList<String> al;
-    private ArrayAdapter<String> arrayAdapter;
+    private Card cards_data;
+    private ArrayAdapter arrayAdapter;
     private int i;
+
+    private FirebaseAuth mAuth;
+
+    ListView listView;
+    List<Card> rowItems;
 
     @Override
 
@@ -22,19 +33,13 @@ public class PetMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pet_main);
 
-        al = new ArrayList<>();
-        al.add("php");
-        al.add("c");
-        al.add("python");
-        al.add("java");
-        al.add("html");
-        al.add("c++");
-        al.add("css");
-        al.add("javascript");
+        mAuth = FirebaseAuth.getInstance();
 
-        arrayAdapter = new ArrayAdapter<>(this, R.layout.item, R.id.helloText, al);
+        rowItems = new ArrayList<>();
 
-        SwipeFlingAdapterView flingContainer = (SwipeFlingAdapterView) findViewById(R.id.frame);
+        arrayAdapter = new ArrayAdapter(this, R.layout.item, rowItems);
+
+        SwipeFlingAdapterView flingContainer = findViewById(R.id.frame);
 
         flingContainer.setAdapter(arrayAdapter);
         flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
@@ -42,7 +47,7 @@ public class PetMainActivity extends AppCompatActivity {
             public void removeFirstObjectInAdapter() {
 
                 Log.d("LIST", "removed object!");
-                al.remove(0);
+                rowItems.remove(0);
                 arrayAdapter.notifyDataSetChanged();
             }
 
@@ -58,10 +63,7 @@ public class PetMainActivity extends AppCompatActivity {
 
             @Override
             public void onAdapterAboutToEmpty(int itemsInAdapter) {
-                al.add("XML ".concat(String.valueOf(i)));
-                arrayAdapter.notifyDataSetChanged();
-                Log.d("LIST", "notified");
-                i++;
+
             }
 
             @Override
@@ -79,5 +81,17 @@ public class PetMainActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private String animal;
+    private String sexAnimal;
+    public void checkUserPreferences(){};
+
+    public void logoutUser(View view) {
+        mAuth.signOut();
+        Intent intent = new Intent(PetMainActivity.this, ChooseLoginRegistrationActivity.class);
+        startActivity(intent);
+        finish();
+        return;
     }
 }
