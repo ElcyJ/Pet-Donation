@@ -43,6 +43,7 @@ public class PetMainActivity extends AppCompatActivity {
 
         flingContainer.setAdapter(arrayAdapter);
         flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
+
             @Override
             public void removeFirstObjectInAdapter() {
 
