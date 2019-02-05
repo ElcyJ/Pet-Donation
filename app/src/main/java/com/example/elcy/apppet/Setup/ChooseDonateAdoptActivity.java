@@ -17,8 +17,8 @@ public class ChooseDonateAdoptActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_donate_adopt);
 
-        mDonate = findViewById(R.id.login);
-        mAdopt = findViewById(R.id.register);
+        mDonate = findViewById(R.id.doar);
+        mAdopt = findViewById(R.id.adotar);
 
         mDonate.setOnClickListener(new View.OnClickListener() {
             @Override

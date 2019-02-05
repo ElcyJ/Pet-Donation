@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.example.elcy.apppet.PetMainActivity;
 import com.example.elcy.apppet.R;
+import com.example.elcy.apppet.Setup.ChooseDonateAdoptActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -39,7 +40,7 @@ public class RegistrationActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user != null){
-                    Intent intent = new Intent(RegistrationActivity.this, PetMainActivity.class);
+                    Intent intent = new Intent(RegistrationActivity.this, ChooseDonateAdoptActivity.class);
                     startActivity(intent);
                     finish();
                     return;
