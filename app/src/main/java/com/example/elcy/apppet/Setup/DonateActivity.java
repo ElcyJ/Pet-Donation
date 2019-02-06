@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 
 import com.example.elcy.apppet.Auth.RegistrationActivity;
+import com.example.elcy.apppet.Models.Dog;
 import com.example.elcy.apppet.R;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -40,13 +41,13 @@ public class DonateActivity extends AppCompatActivity {
                 final RadioButton radioType = findViewById(selectTypeId);
                 final RadioButton radioSex = findViewById(selectSexId);
                 final String type = radioType.getText().toString();
-
-                System.out.println(type);
+                final String sex = radioSex.getText().toString();
 
                 if (type.equals("Cachorro")) {
-                    System.out.println("deu bom");
-                } else {
-                    System.out.println("deu ruim");
+                    DatabaseReference currentAnimalDb = FirebaseDatabase.getInstance().getReference().child("Animals").child("Dog");
+                    Dog dog = new Dog(sex, age);
+                    currentAnimalDb.setValue(dog);
+
                 }
 
             };
