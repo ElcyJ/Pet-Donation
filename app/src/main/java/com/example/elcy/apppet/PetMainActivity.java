@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.elcy.apppet.Auth.ChooseLoginRegistrationActivity;
@@ -24,14 +23,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PetMainActivity extends AppCompatActivity {
-
+    //private Card cards_data[];
     private ArrayAdapter arrayAdapter;
     private int i;
 
     private FirebaseAuth mAuth;
+    private String currentUid;
 
-    ListView listView;
+    //ListView listView;
     List<Card> rowItems;
+
+    String animalMain;
 
     @Override
 
@@ -39,13 +41,45 @@ public class PetMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pet_main);
 
-        mAuth = FirebaseAuth.getInstance();
+        //final DatabaseReference petsDb = FirebaseDatabase.getInstance().getReference().child("Animals");
 
+        mAuth = FirebaseAuth.getInstance();
+        currentUid = mAuth.getCurrentUser().getUid();
         rowItems = new ArrayList<>();
-        Card card = new Card("kjnjn", "jnk");
-        rowItems.add(card);
-        //rowItems.add(new Card("ddd", "jjdjdj"));
+
         arrayAdapter = new PetArrayAdapter(this, R.layout.item, rowItems);
+        DatabaseReference showAllAnimalsDb = FirebaseDatabase.getInstance().getReference().child("Animals").child("Cat");
+        showAllAnimalsDb.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if (dataSnapshot.exists()){
+                    animalMain = "Cat";
+                    Card card = new Card(dataSnapshot.getKey(), dataSnapshot.child("sex").getValue().toString());
+                    rowItems.add(card);
+                    arrayAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
 
         SwipeFlingAdapterView flingContainer = findViewById(R.id.frame);
@@ -62,6 +96,9 @@ public class PetMainActivity extends AppCompatActivity {
 
             @Override
             public void onLeftCardExit(Object dataObject) {
+                Card obj = (Card) dataObject;
+                String petId = obj.getUserId();
+                //showAllAnimalsDb.child(petId).child("connections").child("nope").child(currentUid).setValue(true);
                 Toast.makeText(PetMainActivity.this, "left", Toast.LENGTH_SHORT).show();
             }
 
@@ -89,38 +126,7 @@ public class PetMainActivity extends AppCompatActivity {
 
         });
 
-        DatabaseReference showAllAnimalsDb = FirebaseDatabase.getInstance().getReference().child("Animals").child("Dog");
-        showAllAnimalsDb.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if (dataSnapshot.exists()){
-                    Card card = new Card(dataSnapshot.getKey(), dataSnapshot.child("sex").getValue().toString());
 
-                    //rowItems.add(card);
-                    //arrayAdapter.notifyDataSetChanged();
-                }
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
 
 
     }
