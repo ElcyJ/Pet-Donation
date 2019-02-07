@@ -30,7 +30,7 @@ public class PetMainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
 
-    //ListView listView;
+    ListView listView;
     List<Card> rowItems;
 
     @Override
@@ -42,9 +42,11 @@ public class PetMainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         rowItems = new ArrayList<>();
+        Card card = new Card("kjnjn", "jnk");
+        rowItems.add(card);
         //rowItems.add(new Card("ddd", "jjdjdj"));
-
         arrayAdapter = new PetArrayAdapter(this, R.layout.item, rowItems);
+
 
         SwipeFlingAdapterView flingContainer = findViewById(R.id.frame);
         flingContainer.setAdapter(arrayAdapter);
@@ -87,15 +89,15 @@ public class PetMainActivity extends AppCompatActivity {
 
         });
 
-        DatabaseReference showAllAnimalsDb = FirebaseDatabase.getInstance().getReference().child("Animals");
+        DatabaseReference showAllAnimalsDb = FirebaseDatabase.getInstance().getReference().child("Animals").child("Dog");
         showAllAnimalsDb.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 if (dataSnapshot.exists()){
-                    Card card = new Card(dataSnapshot.getKey(), dataSnapshot.child("Dog").child("sex").getValue().toString());
+                    Card card = new Card(dataSnapshot.getKey(), dataSnapshot.child("sex").getValue().toString());
 
-                    rowItems.add(card);
-                    arrayAdapter.notifyDataSetChanged();
+                    //rowItems.add(card);
+                    //arrayAdapter.notifyDataSetChanged();
                 }
             }
 
@@ -119,6 +121,8 @@ public class PetMainActivity extends AppCompatActivity {
 
             }
         });
+
+
     }
 
     public void logoutUser(View view) {

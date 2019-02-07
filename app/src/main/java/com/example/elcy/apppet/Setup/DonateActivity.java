@@ -1,6 +1,8 @@
 package com.example.elcy.apppet.Setup;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +18,9 @@ import com.example.elcy.apppet.Models.Cat;
 import com.example.elcy.apppet.Models.Dog;
 import com.example.elcy.apppet.PetMainActivity;
 import com.example.elcy.apppet.R;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -49,12 +54,13 @@ public class DonateActivity extends AppCompatActivity {
                 if (type.equals("Cachorro")) {
                     DatabaseReference currentAnimalDb = FirebaseDatabase.getInstance().getReference().child("Animals").child("Dog");
                     Dog dog = new Dog(sex, age);
-                    currentAnimalDb.setValue(dog);
+                    currentAnimalDb.push().setValue(dog);
+
 
                 }if (type.equals("Gato")) {
                     DatabaseReference currentAnimalDb = FirebaseDatabase.getInstance().getReference().child("Animals").child("Cat");
                     Cat cat = new Cat(sex, age);
-                    currentAnimalDb.setValue(cat);
+                    currentAnimalDb.push().setValue(cat);
 
                 }
 
