@@ -1,6 +1,8 @@
 package com.example.elcy.apppet;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +13,11 @@ import android.widget.Toast;
 
 import com.example.elcy.apppet.Auth.ChooseLoginRegistrationActivity;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import java.util.ArrayList;
@@ -18,7 +25,6 @@ import java.util.List;
 
 public class PetMainActivity extends AppCompatActivity {
 
-    private Card cards_data;
     private ArrayAdapter arrayAdapter;
     private int i;
 
@@ -36,11 +42,13 @@ public class PetMainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         rowItems = new ArrayList<>();
+        Card card = new Card("kjnjn", "jnk");
+        rowItems.add(card);
+        //rowItems.add(new Card("ddd", "jjdjdj"));
+        arrayAdapter = new PetArrayAdapter(this, R.layout.item, rowItems);
 
-        arrayAdapter = new ArrayAdapter(this, R.layout.item, rowItems);
 
         SwipeFlingAdapterView flingContainer = findViewById(R.id.frame);
-
         flingContainer.setAdapter(arrayAdapter);
         flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
 
@@ -81,12 +89,41 @@ public class PetMainActivity extends AppCompatActivity {
 
         });
 
+        DatabaseReference showAllAnimalsDb = FirebaseDatabase.getInstance().getReference().child("Animals").child("Dog");
+        showAllAnimalsDb.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if (dataSnapshot.exists()){
+                    Card card = new Card(dataSnapshot.getKey(), dataSnapshot.child("sex").getValue().toString());
+
+                    //rowItems.add(card);
+                    //arrayAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
 
     }
-
-    private String animal;
-    private String sexAnimal;
-    public void checkUserPreferences(){};
 
     public void logoutUser(View view) {
         mAuth.signOut();
