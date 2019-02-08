@@ -41,49 +41,17 @@ public class PetMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pet_main);
 
-        //final DatabaseReference petsDb = FirebaseDatabase.getInstance().getReference().child("Animals");
-
         mAuth = FirebaseAuth.getInstance();
         currentUid = mAuth.getCurrentUser().getUid();
         rowItems = new ArrayList<>();
 
         arrayAdapter = new PetArrayAdapter(this, R.layout.item, rowItems);
-        DatabaseReference showAllAnimalsDb = FirebaseDatabase.getInstance().getReference().child("Animals").child("Cat");
-        showAllAnimalsDb.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if (dataSnapshot.exists()){
-                    animalMain = "Cat";
-                    Card card = new Card(dataSnapshot.getKey(), dataSnapshot.child("sex").getValue().toString());
-                    rowItems.add(card);
-                    arrayAdapter.notifyDataSetChanged();
-                }
-            }
 
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
+        final DatabaseReference showAllAnimalsDb = FirebaseDatabase.getInstance().getReference().child("Animals").child("Dog");
 
         SwipeFlingAdapterView flingContainer = findViewById(R.id.frame);
         flingContainer.setAdapter(arrayAdapter);
+
         flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
 
             @Override
@@ -98,7 +66,7 @@ public class PetMainActivity extends AppCompatActivity {
             public void onLeftCardExit(Object dataObject) {
                 Card obj = (Card) dataObject;
                 String petId = obj.getUserId();
-                //showAllAnimalsDb.child(petId).child("connections").child("nope").child(currentUid).setValue(true);
+                showAllAnimalsDb.child(petId).child("connections").child("nope").child(currentUid).setValue(true);
                 Toast.makeText(PetMainActivity.this, "left", Toast.LENGTH_SHORT).show();
             }
 
@@ -127,7 +95,36 @@ public class PetMainActivity extends AppCompatActivity {
         });
 
 
+        showAllAnimalsDb.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if (dataSnapshot.exists()){
+                    Card card = new Card(dataSnapshot.getKey(), dataSnapshot.child("sex").getValue().toString());
+                    rowItems.add(card);
+                    arrayAdapter.notifyDataSetChanged();
+                }
+            }
 
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
     }
 
