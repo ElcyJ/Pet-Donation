@@ -2,13 +2,24 @@ package com.example.elcy.apppet.Models;
 
 public class Animal {
 
+    private String owner;
     private String sex;
     private Integer age;
 
-    public Animal(String sex, Integer age) {
+    public Animal(String owner, String sex, Integer age) {
+        this.owner = owner;
         this.sex = sex;
         this.age = age;
     }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
 
     public String getSex() {
         return sex;

@@ -25,11 +25,13 @@ public class PetArrayAdapter extends ArrayAdapter<Card> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item, parent, false);
         }
 
-        TextView name = (TextView)(convertView.findViewById(R.id.nameCard));
+        TextView sex = (TextView)(convertView.findViewById(R.id.nameCard));
+        TextView owner = (TextView)(convertView.findViewById(R.id.ownerCard));
         ImageView image = convertView.findViewById(R.id.image);
 
 
-        name.setText(card_item.getName());
+        sex.setText(card_item.getName());
+        owner.setText(card_item.getOwnerId());
         image.setImageResource(R.mipmap.ic_launcher);
 
         return convertView;

@@ -47,7 +47,9 @@ public class PetMainActivity extends AppCompatActivity {
 
         arrayAdapter = new PetArrayAdapter(this, R.layout.item, rowItems);
 
-        final DatabaseReference showAllAnimalsDb = FirebaseDatabase.getInstance().getReference().child("Animals").child("Dog");
+        final DatabaseReference showDogDb = FirebaseDatabase.getInstance().getReference().child("Animals").child("Dog");
+        final DatabaseReference showCatDb = FirebaseDatabase.getInstance().getReference().child("Animals").child("Cat");
+        final DatabaseReference usersDb = FirebaseDatabase.getInstance().getReference().child("Users");
 
         SwipeFlingAdapterView flingContainer = findViewById(R.id.frame);
         flingContainer.setAdapter(arrayAdapter);
@@ -65,8 +67,9 @@ public class PetMainActivity extends AppCompatActivity {
             @Override
             public void onLeftCardExit(Object dataObject) {
                 Card obj = (Card) dataObject;
-                String petId = obj.getUserId();
-                showAllAnimalsDb.child(petId).child("connections").child("nope").child(currentUid).setValue(true);
+                String petId = obj.getPetId();
+                //showDogDb.child(petId).child("connections").child("nope").child(currentUid).setValue(true);
+                usersDb.child(currentUid).child("connections").child("likes").child(petId).setValue(true);
                 Toast.makeText(PetMainActivity.this, "left", Toast.LENGTH_SHORT).show();
             }
 
@@ -82,6 +85,7 @@ public class PetMainActivity extends AppCompatActivity {
 
             @Override
             public void onScroll(float scrollProgressPercent) {
+
             }
 
         });
@@ -95,11 +99,11 @@ public class PetMainActivity extends AppCompatActivity {
         });
 
 
-        showAllAnimalsDb.addChildEventListener(new ChildEventListener() {
+        showDogDb.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 if (dataSnapshot.exists()){
-                    Card card = new Card(dataSnapshot.getKey(), dataSnapshot.child("sex").getValue().toString());
+                    Card card = new Card(dataSnapshot.getKey(), dataSnapshot.child("owner").getValue().toString(), dataSnapshot.child("sex").getValue().toString());
                     rowItems.add(card);
                     arrayAdapter.notifyDataSetChanged();
                 }
@@ -124,7 +128,43 @@ public class PetMainActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
+
+
         });
+
+        showCatDb.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                if (dataSnapshot.exists()){
+                    Card card = new Card(dataSnapshot.getKey(), dataSnapshot.child("owner").getValue().toString(), dataSnapshot.child("sex").getValue().toString());
+                    rowItems.add(card);
+                    arrayAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+
+
+        });
+
 
     }
 

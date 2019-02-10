@@ -1,8 +1,6 @@
 package com.example.elcy.apppet.Setup;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,17 +8,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
-
-import com.example.elcy.apppet.Auth.RegistrationActivity;
 import com.example.elcy.apppet.Models.Cat;
 import com.example.elcy.apppet.Models.Dog;
 import com.example.elcy.apppet.PetMainActivity;
 import com.example.elcy.apppet.R;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -30,10 +23,17 @@ public class DonateActivity extends AppCompatActivity {
     private EditText mAge;
     private RadioGroup mRadioAnimal, mRadioSexAnimal;
 
+    private FirebaseAuth mAuth;
+    private String currentUid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_donate);
+
+
+        mAuth = FirebaseAuth.getInstance();
+        currentUid = mAuth.getCurrentUser().getUid();
 
         mAddPet = findViewById(R.id.add_pet);
         mAge = findViewById(R.id.animal_age);
@@ -53,13 +53,13 @@ public class DonateActivity extends AppCompatActivity {
 
                 if (type.equals("Cachorro")) {
                     DatabaseReference currentAnimalDb = FirebaseDatabase.getInstance().getReference().child("Animals").child("Dog");
-                    Dog dog = new Dog(sex, age);
+                    Dog dog = new Dog(currentUid,sex, age);
                     currentAnimalDb.push().setValue(dog);
 
 
                 }if (type.equals("Gato")) {
                     DatabaseReference currentAnimalDb = FirebaseDatabase.getInstance().getReference().child("Animals").child("Cat");
-                    Cat cat = new Cat(sex, age);
+                    Cat cat = new Cat(currentUid,sex, age);
                     currentAnimalDb.push().setValue(cat);
 
                 }
