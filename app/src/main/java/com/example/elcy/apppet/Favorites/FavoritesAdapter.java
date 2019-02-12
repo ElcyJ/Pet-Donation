@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.elcy.apppet.Chat.ChatActivity;
 import com.example.elcy.apppet.R;
 
@@ -67,7 +68,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
         holder.mFavoriteSex.setText(favoriteList.get(position).getFavoriteSex());
         holder.mFavoriteAge.setText(favoriteList.get(position).getFavoriteAge());
         holder.mFavoriteOwner.setText(favoriteList.get(position).getFavoriteOwnerId());
-        //Glide.with(context).load(favoriteList.get(position).getFavoriteImamgeUrl()).into(holder.mFavoriteImage);
+        Glide.with(context).load(favoriteList.get(position).getFavoriteImamgeUrl()).into(holder.mFavoriteImage);
     }
 
     @Override
