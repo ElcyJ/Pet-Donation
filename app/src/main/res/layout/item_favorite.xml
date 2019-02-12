@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:padding="20sp">
+
+    <ImageView
+        android:layout_width="75sp"
+        android:layout_height="75sp"
+        android:src="@mipmap/ic_launcher"
+        android:id="@+id/favoriteImage"/>
+    <LinearLayout
+        android:paddingLeft="20sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center">
+        <TextView
+            android:paddingBottom="10sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Favorite id"
+            android:layout_gravity="center"
+            android:id="@+id/favoriteId"/>
+        <TextView
+            android:paddingBottom="10sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Favorite sex"
+            android:layout_gravity="center"
+            android:id="@+id/favoriteSex"/>
+        <TextView
+            android:paddingBottom="10sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Favorite age"
+            android:layout_gravity="center"
+            android:id="@+id/favoriteAge"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Favorite owner"
+            android:layout_gravity="center"
+            android:id="@+id/favoriteOwner"/>
+    </LinearLayout>
+
+
+</LinearLayout>

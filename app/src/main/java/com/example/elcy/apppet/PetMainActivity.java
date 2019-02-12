@@ -79,6 +79,7 @@ public class PetMainActivity extends AppCompatActivity {
             public void onRightCardExit(Object dataObject) {
                 Card obj = (Card) dataObject;
                 String petId = obj.getPetId();
+                String petType = obj.getPetType();
                 if (obj.getPetType().equals("Dog")) {
                     showDogDb.child(petId).child("connections").child("yeps").child(currentUid).setValue(true);
                 }
@@ -86,6 +87,7 @@ public class PetMainActivity extends AppCompatActivity {
                     showCatDb.child(petId).child("connections").child("yeps").child(currentUid).setValue(true);
                 }
                 usersDb.child(currentUid).child("connections").child("yeps").child(petId).setValue(true);
+                usersDb.child(currentUid).child("connections").child("yeps").child(petId).child(petType).setValue(true);
                 Toast.makeText(PetMainActivity.this, "right", Toast.LENGTH_SHORT).show();
             }
 
@@ -172,7 +174,7 @@ public class PetMainActivity extends AppCompatActivity {
     }
 
     public void goToFavorites(View view) {
-        Intent intent = new Intent(PetMainActivity.this, SettingsActivity.class);
+        Intent intent = new Intent(PetMainActivity.this, FavoritesActivity.class);
         startActivity(intent);
     }
 }
