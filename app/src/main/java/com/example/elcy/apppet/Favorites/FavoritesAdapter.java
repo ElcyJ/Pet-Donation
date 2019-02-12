@@ -1,6 +1,8 @@
-package com.example.elcy.apppet;
+package com.example.elcy.apppet.Favorites;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.example.elcy.apppet.Chat.ChatActivity;
+import com.example.elcy.apppet.R;
 
 import java.util.List;
 
@@ -38,7 +41,11 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
 
         @Override
         public void onClick(View v) {
-
+            Intent intent = new Intent(v.getContext(), ChatActivity.class);
+            Bundle b = new Bundle();
+            b.putString("ownerId", mFavoriteOwner.getText().toString());
+            intent.putExtras(b);
+            v.getContext().startActivity(intent);
         }
 
 

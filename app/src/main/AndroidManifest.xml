@@ -15,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".FavoritesActivity"></activity>
+        <activity android:name=".Chat.ChatActivity"></activity>
+        <activity android:name=".Favorites.FavoritesActivity" />
         <activity android:name=".SettingsActivity" />
         <activity android:name=".Setup.AdoptActivity" />
         <activity android:name=".Setup.DonateActivity" />

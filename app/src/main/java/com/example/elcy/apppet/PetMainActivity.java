@@ -11,6 +11,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.example.elcy.apppet.Auth.ChooseLoginRegistrationActivity;
+import com.example.elcy.apppet.Favorites.FavoritesActivity;
+import com.example.elcy.apppet.Models.Card;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -49,6 +51,7 @@ public class PetMainActivity extends AppCompatActivity {
 
         final DatabaseReference usersDb = FirebaseDatabase.getInstance().getReference().child("Users");
 
+
         SwipeFlingAdapterView flingContainer = findViewById(R.id.frame);
         flingContainer.setAdapter(arrayAdapter);
 
@@ -80,6 +83,7 @@ public class PetMainActivity extends AppCompatActivity {
                 Card obj = (Card) dataObject;
                 String petId = obj.getPetId();
                 String petType = obj.getPetType();
+                String petOwnerId = obj.getOwnerId();
                 if (obj.getPetType().equals("Dog")) {
                     showDogDb.child(petId).child("connections").child("yeps").child(currentUid).setValue(true);
                 }
@@ -88,7 +92,15 @@ public class PetMainActivity extends AppCompatActivity {
                 }
                 usersDb.child(currentUid).child("connections").child("yeps").child(petId).setValue(true);
                 usersDb.child(currentUid).child("connections").child("yeps").child(petId).child(petType).setValue(true);
+
+                String key = FirebaseDatabase.getInstance().getReference().child("Chat").push().getKey();
+
+                usersDb.child(currentUid).child("connections").child("owners").child(petOwnerId).child("ChatId").setValue(key);
+                usersDb.child(petOwnerId).child("connections").child("owners").child(currentUid).child("ChatId").setValue(key);
+
                 Toast.makeText(PetMainActivity.this, "right", Toast.LENGTH_SHORT).show();
+
+
             }
 
             @Override
@@ -99,6 +111,7 @@ public class PetMainActivity extends AppCompatActivity {
             public void onScroll(float scrollProgressPercent) {
             }
         });
+
 
         addToCards();
 

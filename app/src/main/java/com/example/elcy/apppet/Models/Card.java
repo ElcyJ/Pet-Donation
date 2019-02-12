@@ -1,4 +1,4 @@
-package com.example.elcy.apppet;
+package com.example.elcy.apppet.Models;
 
 import android.widget.ArrayAdapter;
 

@@ -1,11 +1,11 @@
-package com.example.elcy.apppet;
+package com.example.elcy.apppet.Favorites;
 
-import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.example.elcy.apppet.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -102,21 +102,7 @@ public class FavoritesActivity extends AppCompatActivity {
                     }
                     if(dataSnapshot.child("owner") != null){
                         owner = dataSnapshot.child("owner").getValue().toString();
-                        /*DatabaseReference userNameDb = FirebaseDatabase.getInstance().getReference().child("Users").child(owner);
-                        userNameDb.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                String ownerName = "";
-                                if(dataSnapshot.exists()){
-                                    ownerName = dataSnapshot.child("name").getValue().toString();
-                                }
-                            }
 
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });*/
                     }
 
                     FavoritesObject obj = new FavoritesObject(petId, petImageUrl, sex, age, owner);
