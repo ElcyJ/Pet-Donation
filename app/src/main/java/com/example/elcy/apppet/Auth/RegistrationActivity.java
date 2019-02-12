@@ -75,7 +75,7 @@ public class RegistrationActivity extends AppCompatActivity {
         });
     }
 
-    @Override
+   @Override
     protected void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(firebaseAuthStateListener);

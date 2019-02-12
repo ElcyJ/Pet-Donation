@@ -5,12 +5,23 @@ public class Animal {
     private String owner;
     private String sex;
     private Integer age;
+    private String imageUrl;
 
-    public Animal(String owner, String sex, Integer age) {
+    public Animal(String owner, String sex, Integer age, String imageUrl) {
         this.owner = owner;
         this.sex = sex;
         this.age = age;
+        this.imageUrl = imageUrl;
     }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
 
     public String getOwner() {
         return owner;

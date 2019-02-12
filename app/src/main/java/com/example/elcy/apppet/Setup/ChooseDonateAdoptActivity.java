@@ -1,6 +1,7 @@
 package com.example.elcy.apppet.Setup;
 
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +17,8 @@ public class ChooseDonateAdoptActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_donate_adopt);
+
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mDonate = findViewById(R.id.doar);
         mAdopt = findViewById(R.id.adotar);
@@ -37,5 +40,7 @@ public class ChooseDonateAdoptActivity extends AppCompatActivity {
                 finish();
             }
         });
+
     }
+
 }

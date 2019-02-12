@@ -47,8 +47,6 @@ public class PetMainActivity extends AppCompatActivity {
 
         arrayAdapter = new PetArrayAdapter(this, R.layout.item, rowItems);
 
-        final DatabaseReference showDogDb = FirebaseDatabase.getInstance().getReference().child("Animals").child("Dog");
-        final DatabaseReference showCatDb = FirebaseDatabase.getInstance().getReference().child("Animals").child("Cat");
         final DatabaseReference usersDb = FirebaseDatabase.getInstance().getReference().child("Users");
 
         SwipeFlingAdapterView flingContainer = findViewById(R.id.frame);
@@ -58,7 +56,6 @@ public class PetMainActivity extends AppCompatActivity {
 
             @Override
             public void removeFirstObjectInAdapter() {
-
                 Log.d("LIST", "removed object!");
                 rowItems.remove(0);
                 arrayAdapter.notifyDataSetChanged();
@@ -68,27 +65,40 @@ public class PetMainActivity extends AppCompatActivity {
             public void onLeftCardExit(Object dataObject) {
                 Card obj = (Card) dataObject;
                 String petId = obj.getPetId();
-                //showDogDb.child(petId).child("connections").child("nope").child(currentUid).setValue(true);
-                usersDb.child(currentUid).child("connections").child("likes").child(petId).setValue(true);
+                if (obj.getPetType().equals("Dog")) {
+                    showDogDb.child(petId).child("connections").child("nopes").child(currentUid).setValue(true);
+                }
+                if (obj.getPetType().equals("Cat")) {
+                    showCatDb.child(petId).child("connections").child("nopes").child(currentUid).setValue(true);
+                }
+                usersDb.child(currentUid).child("connections").child("nopes").child(petId).setValue(true);
                 Toast.makeText(PetMainActivity.this, "left", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onRightCardExit(Object dataObject) {
+                Card obj = (Card) dataObject;
+                String petId = obj.getPetId();
+                if (obj.getPetType().equals("Dog")) {
+                    showDogDb.child(petId).child("connections").child("yeps").child(currentUid).setValue(true);
+                }
+                if (obj.getPetType().equals("Cat")) {
+                    showCatDb.child(petId).child("connections").child("yeps").child(currentUid).setValue(true);
+                }
+                usersDb.child(currentUid).child("connections").child("yeps").child(petId).setValue(true);
                 Toast.makeText(PetMainActivity.this, "right", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onAdapterAboutToEmpty(int itemsInAdapter) {
-
             }
 
             @Override
             public void onScroll(float scrollProgressPercent) {
-
             }
-
         });
+
+        addToCards();
 
         flingContainer.setOnItemClickListener(new SwipeFlingAdapterView.OnItemClickListener() {
             @Override
@@ -98,81 +108,71 @@ public class PetMainActivity extends AppCompatActivity {
 
         });
 
-
-        showDogDb.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if (dataSnapshot.exists()){
-                    Card card = new Card(dataSnapshot.getKey(), dataSnapshot.child("owner").getValue().toString(), dataSnapshot.child("sex").getValue().toString());
-                    rowItems.add(card);
-                    arrayAdapter.notifyDataSetChanged();
-                }
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-
-
-        });
-
-        showCatDb.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                if (dataSnapshot.exists()){
-                    Card card = new Card(dataSnapshot.getKey(), dataSnapshot.child("owner").getValue().toString(), dataSnapshot.child("sex").getValue().toString());
-                    rowItems.add(card);
-                    arrayAdapter.notifyDataSetChanged();
-                }
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-
-
-        });
-
-
     }
+
+    final DatabaseReference showDogDb = FirebaseDatabase.getInstance().getReference().child("Animals").child("Dog");
+    final DatabaseReference showCatDb = FirebaseDatabase.getInstance().getReference().child("Animals").child("Cat");
+       public void addToCards(){
+            showDogDb.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                    if (dataSnapshot.exists() && !dataSnapshot.child("owner").getValue().toString().equals(currentUid)){
+                        if (!dataSnapshot.child("connections").child("nopes").hasChild(currentUid) && !dataSnapshot.child("connections").child("yeps").hasChild(currentUid)) {
+                            Card card = new Card("Dog",dataSnapshot.getKey(), dataSnapshot.child("owner").getValue().toString(), dataSnapshot.child("sex").getValue().toString(), dataSnapshot.child("imageUrl").getValue().toString());
+                            rowItems.add(card);
+                            arrayAdapter.notifyDataSetChanged();
+                        }
+                    }
+                }
+
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {}
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {}
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {}
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {}
+            });
+
+            showCatDb.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                    if (dataSnapshot.exists() && !dataSnapshot.child("owner").getValue().toString().equals(currentUid)){
+                        if (!dataSnapshot.child("connections").child("nopes").hasChild(currentUid) && !dataSnapshot.child("connections").child("yeps").hasChild(currentUid)) {
+                            Card card = new Card("Cat", dataSnapshot.getKey(), dataSnapshot.child("owner").getValue().toString(), dataSnapshot.child("sex").getValue().toString(), dataSnapshot.child("imageUrl").getValue().toString());
+                            rowItems.add(card);
+                            arrayAdapter.notifyDataSetChanged();
+                        }
+                    }
+                }
+
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {}
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {}
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {}
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {}
+            });
+        }
+
 
     public void logoutUser(View view) {
         mAuth.signOut();
         Intent intent = new Intent(PetMainActivity.this, ChooseLoginRegistrationActivity.class);
         startActivity(intent);
         finish();
-        return;
+    }
+
+    public void goToSettings(View view) {
+        Intent intent = new Intent(PetMainActivity.this, SettingsActivity.class);
+        startActivity(intent);
+    }
+
+    public void goToFavorites(View view) {
+        Intent intent = new Intent(PetMainActivity.this, SettingsActivity.class);
+        startActivity(intent);
     }
 }

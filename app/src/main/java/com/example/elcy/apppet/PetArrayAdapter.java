@@ -8,6 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 public class PetArrayAdapter extends ArrayAdapter<Card> {
@@ -30,9 +32,9 @@ public class PetArrayAdapter extends ArrayAdapter<Card> {
         ImageView image = convertView.findViewById(R.id.image);
 
 
-        sex.setText(card_item.getName());
+        sex.setText(card_item.getSex());
         owner.setText(card_item.getOwnerId());
-        image.setImageResource(R.mipmap.ic_launcher);
+        Glide.with(getContext()).load(card_item.getPetImageUrl()).into(image);
 
         return convertView;
     }
